@@ -290,7 +290,7 @@ MaterialEditor.prototype.update = function () {
     }
 
     //Render scene
-    this.canvas.renderer.render(this.scene, this.camera);
+    this.canvas.renderer && this.canvas.renderer.render(this.scene, this.camera);
   }
 
   //Move material view

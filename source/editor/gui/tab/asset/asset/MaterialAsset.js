@@ -61,6 +61,7 @@ function MaterialAsset(parent) {
 
   //Mouse over event
   this.element.onmouseenter = function () {
+    self.element.title = self.asset.type;
     this.style.backgroundColor = Editor.theme.buttonOverColor;
     self.highlightMaterial();
   };
@@ -75,6 +76,7 @@ function MaterialAsset(parent) {
 
   //Double click
   this.element.ondblclick = function () {
+    console.log(self);
     openMaterialEditor(self);
   };
 
@@ -94,6 +96,7 @@ function MaterialAsset(parent) {
 
     context.addOption('Select objects', function () {
       Editor.clearSelection();
+      console.log(Editor.program);
       Editor.program.traverse(function (child) {
         if (child.material === self.asset) {
           Editor.addToSelection(child);

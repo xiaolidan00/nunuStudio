@@ -145,6 +145,7 @@ function MaterialAsset(parent) {
 
           //Add
           Editor.program.addMaterial(material);
+          Editor.gui.assetExplorer.updateObjectsView();
           Editor.updateSelectionGUI();
         } catch (e) {
           Editor.alert('Material duplication failed\n' + e.stack);

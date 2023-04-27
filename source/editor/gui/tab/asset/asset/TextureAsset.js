@@ -67,38 +67,38 @@ function TextureAsset(parent) {
       }
     });
 
-    context.addOption(Locale.duplicate, function () {
-      if (self.asset !== null) {
-        try {
-          var resources = {
-            videos: {},
-            images: {},
-            fonts: {},
-            textures: {}
-          };
+    // context.addOption(Locale.duplicate, function () {
+    //   if (self.asset !== null) {
+    //     try {
+    //       var resources = {
+    //         videos: {},
+    //         images: {},
+    //         fonts: {},
+    //         textures: {}
+    //       };
 
-          //Serialize
-          var json = self.asset.toJSON(resources);
-          var images = ObjectLoader.prototype.parseImages.call(this, resources.images);
-          var videos = ObjectLoader.prototype.parseVideos.call(this, resources.videos);
+    //       //Serialize
+    //       var json = self.asset.toJSON(resources);
+    //       var images = ObjectLoader.prototype.parseImages.call(this, resources.images);
+    //       var videos = ObjectLoader.prototype.parseVideos.call(this, resources.videos);
 
-          //Loader
-          var loader = new TextureLoader();
-          loader.setImages(images);
-          loader.setVideos(videos);
+    //       //Loader
+    //       var loader = new TextureLoader();
+    //       loader.setImages(images);
+    //       loader.setVideos(videos);
 
-          //Load
-          var texture = loader.parse(json);
-          texture.uuid = THREE.Math.generateUUID();
+    //       //Load
+    //       var texture = loader.parse(json);
+    //       texture.uuid = THREE.Math.generateUUID();
 
-          //Add
-          Editor.program.addTexture(texture);
-          Editor.updateObjectsViewsGUI();
-        } catch (e) {
-          Editor.alert('Texture duplication failed\n' + e.stack);
-        }
-      }
-    });
+    //       //Add
+    //       Editor.program.addTexture(texture);
+    //       Editor.updateObjectsViewsGUI();
+    //     } catch (e) {
+    //       Editor.alert('Texture duplication failed\n' + e.stack);
+    //     }
+    //   }
+    // });
     context.updateInterface();
   };
 

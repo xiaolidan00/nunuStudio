@@ -490,6 +490,9 @@ function TreeNode(container) {
         openTab(ParticleEditor, self.object);
       } else if (self.object instanceof THREE.Camera) {
         openTab(CameraEditor, self.object);
+      } else if (self.object.isObject3D === true) {
+        console.log(self.object);
+        openSceneTab();
       } else {
         self.updateFoldedState(!self.folded);
       }
@@ -672,6 +675,7 @@ TreeNode.prototype.addObject = function (object) {
   var element = new TreeNode(this.container);
   element.attach(object);
   element.parent = this;
+
   this.children.push(element);
   return element;
 };

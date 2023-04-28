@@ -57,7 +57,6 @@ ObjectLoader.prototype.parse = function (json, onLoad) {
   console.log(json);
   var resources = this.parseResources(json.resources);
   var shapes = this.parseShape(json.shapes);
-  console.log(shapes);
   var geometries = this.parseGeometries(json.geometries, shapes);
   var images = this.parseImages(json.images);
   var videos = this.parseVideos(json.videos);
@@ -74,7 +73,6 @@ ObjectLoader.prototype.parse = function (json, onLoad) {
     fonts,
     resources
   );
-
   if (json.skeletons) {
     var skeletons = this.parseSkeletons(json.skeletons, object);
     this.bindSkeletons(object, skeletons);
@@ -193,7 +191,10 @@ ObjectLoader.prototype.parseMaterials = function (json, textures) {
 
   if (json !== undefined) {
     for (var i in json) {
-      materials[json[i].uuid] = loader.parse(json[i]);
+      let m = loader.parse(json[i]);
+      if (m) {
+        materials[json[i].uuid] = m;
+      }
     }
   }
 
@@ -1057,6 +1058,7 @@ ObjectLoader.prototype.parseObject = function (
 
   //Attach resources to program
   if (data.type === 'Program') {
+    object.geometries = geometries;
     object.materials = materials;
     object.textures = textures;
     object.resources = resources;

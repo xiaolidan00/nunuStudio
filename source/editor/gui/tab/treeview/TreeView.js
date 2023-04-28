@@ -227,9 +227,9 @@ TreeView.prototype.buildTree = function () {
   this.root.attach(this.program);
   this.root.updateInterface();
 
-  // for (var i = 0; i < this.program.children.length; i++) {
-  //   fillTree(this.root, this.program.children[i]);
-  // }
+  for (var i = 0; i < this.program.children.length; i++) {
+    fillTree(this.root, this.program.children[i]);
+  }
 };
 
 /**

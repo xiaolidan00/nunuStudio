@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
 /**
  * Materials describe the appearance of objects. They are defined in a (mostly) renderer-independent way, so you don"t have to rewrite materials if you decide to use a different renderer.
- * 
+ *
  * Original documentation available here https://threejs.org/docs/index.html#Reference/Materials/Material
  *
  * @class Material
@@ -11,33 +11,30 @@
 
 /**
  * Dispose material.
- * 
+ *
  * Also disposes all the textures attached to the material.
- * 
+ *
  * @method dispose
  */
-THREE.Material.prototype.dispose = function()
-{
-	function disposeTexture(texture)
-	{
-		if(texture !== undefined && texture !== null)
-		{
-			texture.dispose();
-		}
-	}
+THREE.Material.prototype.dispose = function () {
+  function disposeTexture(texture) {
+    if (texture !== undefined && texture !== null) {
+      texture.dispose();
+    }
+  }
 
-	this.dispatchEvent({type:"dispose"});
+  this.dispatchEvent({ type: 'dispose' });
 
-	disposeTexture(this.map);
-	disposeTexture(this.bumpMap);
-	disposeTexture(this.normalMap);
-	disposeTexture(this.displacementMap);
-	disposeTexture(this.specularMap);
-	disposeTexture(this.emissiveMap);
-	disposeTexture(this.alphaMap);
-	disposeTexture(this.roughnessMap);
-	disposeTexture(this.metalnessMap);
-	disposeTexture(this.envMap);
+  disposeTexture(this.map);
+  disposeTexture(this.bumpMap);
+  disposeTexture(this.normalMap);
+  disposeTexture(this.displacementMap);
+  disposeTexture(this.specularMap);
+  disposeTexture(this.emissiveMap);
+  disposeTexture(this.alphaMap);
+  disposeTexture(this.roughnessMap);
+  disposeTexture(this.metalnessMap);
+  disposeTexture(this.envMap);
 };
 
 /**
@@ -47,326 +44,279 @@ THREE.Material.prototype.dispose = function()
  * @param {Object} meta Metadata.
  * @return {Object} JSON data.
  */
-THREE.Material.prototype.toJSON = function(meta)
-{
-	if(meta === undefined)
-	{
-		meta =
-		{
-			textures: {},
-			images: {},
-			videos: {}
-		};
-	}
+THREE.Material.prototype.toJSON = function (meta) {
+  if (meta === undefined) {
+    meta = {
+      textures: {},
+      images: {},
+      videos: {}
+    };
+  }
 
-	var data = {};
+  var data = {};
 
-	//Material metadata
-	data.uuid = this.uuid;
-	data.type = this.type;
-	data.name = this.name;
+  //Material metadata
+  data.uuid = this.uuid;
+  data.type = this.type;
+  data.name = this.name;
 
-	//Depth
-	data.depthFunc = this.depthFunc;
-	data.depthTest = this.depthTest;
-	data.depthWrite = this.depthWrite;
-	
-	//Color
-	if(this.color && this.color.isColor)
-	{
-		data.color = this.color.getHex();
-	}
+  //Depth
+  data.depthFunc = this.depthFunc;
+  data.depthTest = this.depthTest;
+  data.depthWrite = this.depthWrite;
 
-	//Roughness, metalness (Standard, PBR)
-	if(this.roughness !== undefined)
-	{
-		data.roughness = this.roughness;
-	}
-	if(this.metalness !== undefined)
-	{
-		data.metalness = this.metalness;
-	}
+  //Color
+  if (this.color && this.color.isColor) {
+    data.color = this.color.getHex();
+  }
 
-	//Specular
-	if(this.specular && this.specular.isColor)
-	{
-		data.specular = this.specular.getHex();
-	}
-	
-	//Shininess
-	if(this.shininess !== undefined)
-	{
-		data.shininess = this.shininess;
-	}
+  //Roughness, metalness (Standard, PBR)
+  if (this.roughness !== undefined) {
+    data.roughness = this.roughness;
+  }
+  if (this.metalness !== undefined) {
+    data.metalness = this.metalness;
+  }
 
-	//Clear coat (PBR)
-	if(this.clearCoat !== undefined)
-	{
-		data.clearCoat = this.clearCoat;
-	}
-	if(this.clearCoatRoughness !== undefined)
-	{
-		data.clearCoatRoughness = this.clearCoatRoughness;
-	}
+  //Specular
+  if (this.specular && this.specular.isColor) {
+    data.specular = this.specular.getHex();
+  }
 
-	//Color map
-	if(this.map && this.map.isTexture)
-	{
-		data.map = this.map.toJSON(meta).uuid;
-	}
-	
-	//Alpha map
-	if(this.alphaMap && this.alphaMap.isTexture)
-	{
-		data.alphaMap = this.alphaMap.toJSON(meta).uuid;
-	}
-	
-	//Light map
-	if(this.lightMap && this.lightMap.isTexture)
-	{
-		data.lightMap = this.lightMap.toJSON(meta).uuid;
-	}
-	
-	//Bump map
-	if(this.bumpMap && this.bumpMap.isTexture)
-	{
-		data.bumpMap = this.bumpMap.toJSON(meta).uuid;
-		data.bumpScale = this.bumpScale;
-	}
+  //Shininess
+  if (this.shininess !== undefined) {
+    data.shininess = this.shininess;
+  }
 
-	//Normal map
-	if(this.normalMap && this.normalMap.isTexture)
-	{
-		data.normalMap = this.normalMap.toJSON(meta).uuid;
-		data.normalMapType = this.normalMapType;
-		data.normalScale = this.normalScale.toArray();
-	}
+  //Clear coat (PBR)
+  if (this.clearCoat !== undefined) {
+    data.clearCoat = this.clearCoat;
+  }
+  if (this.clearCoatRoughness !== undefined) {
+    data.clearCoatRoughness = this.clearCoatRoughness;
+  }
 
-	//Displacement map
-	if(this.displacementMap && this.displacementMap.isTexture)
-	{
-		data.displacementMap = this.displacementMap.toJSON(meta).uuid;
-		data.displacementScale = this.displacementScale;
-		data.displacementBias = this.displacementBias;
-	}
+  //Color map
+  if (this.map && this.map.isTexture) {
+    data.map = this.map.toJSON(meta).uuid;
+  }
 
-	//Roughness and metalness map (Stanard, PBR)
-	if(this.roughnessMap && this.roughnessMap.isTexture)
-	{
-		data.roughnessMap = this.roughnessMap.toJSON(meta).uuid;
-	}
-	if(this.metalnessMap && this.metalnessMap.isTexture)
-	{
-		data.metalnessMap = this.metalnessMap.toJSON(meta).uuid;
-	}
+  //Alpha map
+  if (this.alphaMap && this.alphaMap.isTexture) {
+    data.alphaMap = this.alphaMap.toJSON(meta).uuid;
+  }
 
-	//Emissive
-	if(this.emissive && this.emissive.isColor)
-	{
-		data.emissive = this.emissive.getHex();
-	}
-	if(this.emissiveIntensity !== 1.0)
-	{
-		data.emissiveIntensity = this.emissiveIntensity;
-	}
+  //Light map
+  if (this.lightMap && this.lightMap.isTexture) {
+    data.lightMap = this.lightMap.toJSON(meta).uuid;
+  }
 
-	//Matcap map
-	if(this.matcap && this.matcap.isTexture)
-	{
-		data.matcap = this.matcap.toJSON(meta).uuid;
-	}
+  //Bump map
+  if (this.bumpMap && this.bumpMap.isTexture) {
+    data.bumpMap = this.bumpMap.toJSON(meta).uuid;
+    data.bumpScale = this.bumpScale;
+  }
 
-	//Emissive map
-	if(this.emissiveMap && this.emissiveMap.isTexture)
-	{
-		data.emissiveMap = this.emissiveMap.toJSON(meta).uuid;
-	}
+  //Normal map
+  if (this.normalMap && this.normalMap.isTexture) {
+    data.normalMap = this.normalMap.toJSON(meta).uuid;
+    data.normalMapType = this.normalMapType;
+    data.normalScale = this.normalScale.toArray();
+  }
 
-	//Ambient occlusion
-	if(this.aoMap && this.aoMap.isTexture)
-	{
-		data.aoMap = this.aoMap.toJSON(meta).uuid;
-	}
-	if(this.aoMapIntensity)
-	{
-		data.aoMapIntensity = this.aoMapIntensity;
-	}
+  //Displacement map
+  if (this.displacementMap && this.displacementMap.isTexture) {
+    data.displacementMap = this.displacementMap.toJSON(meta).uuid;
+    data.displacementScale = this.displacementScale;
+    data.displacementBias = this.displacementBias;
+  }
 
-	//Specular map (Lambert, Phong)
-	if(this.specularMap && this.specularMap.isTexture)
-	{
-		data.specularMap = this.specularMap.toJSON(meta).uuid;
-	}
+  //Roughness and metalness map (Stanard, PBR)
+  if (this.roughnessMap && this.roughnessMap.isTexture) {
+    data.roughnessMap = this.roughnessMap.toJSON(meta).uuid;
+  }
+  if (this.metalnessMap && this.metalnessMap.isTexture) {
+    data.metalnessMap = this.metalnessMap.toJSON(meta).uuid;
+  }
 
-	//Environment map (Lambert, Phong, Standard, PBR)
-	if(this.envMap && this.envMap.isTexture)
-	{
-		data.envMap = this.envMap.toJSON(meta).uuid;
-		data.reflectivity = this.reflectivity; //Scale behind envMap
+  //Emissive
+  if (this.emissive && this.emissive.isColor) {
+    data.emissive = this.emissive.getHex();
+  }
+  if (this.emissiveIntensity !== 1.0) {
+    data.emissiveIntensity = this.emissiveIntensity;
+  }
 
-		if(this.combine)
-		{
-			data.combine = this.combine;
-		}
-		if(this.envMapIntensity)
-		{
-			data.envMapIntensity = this.envMapIntensity;
-		}
-		if(this.refractionRatio)
-		{
-			data.refractionRatio = this.refractionRatio;
-		}
-	}
+  //Matcap map
+  if (this.matcap && this.matcap.isTexture) {
+    data.matcap = this.matcap.toJSON(meta).uuid;
+  }
+  if (this.glossiness !== undefined) {
+    data.glossiness = this.glossiness;
+  }
 
-	//Gradient map
-	if(this.gradientMap && this.gradientMap.isTexture)
-	{
-		data.gradientMap = this.gradientMap.toJSON(meta).uuid;
-	}
+  if (this.glossinessMap && this.glossinessMap.isTexture) {
+    data.glossinessMap = this.glossinessMap.toJSON(meta).uuid;
+  }
+  if (this.isGLTFSpecularGlossinessMaterial !== undefined) {
+    data.isGLTFSpecularGlossinessMaterial = this.isGLTFSpecularGlossinessMaterial;
+  }
+  //Emissive map
+  if (this.emissiveMap && this.emissiveMap.isTexture) {
+    data.emissiveMap = this.emissiveMap.toJSON(meta).uuid;
+  }
 
-	//Size (PointsMaterial)
-	if(this.size !== undefined)
-	{
-		data.size = this.size;
-	}
-	if(this.sizeAttenuation !== undefined)
-	{
-		data.sizeAttenuation = this.sizeAttenuation;
-	}
+  //Ambient occlusion
+  if (this.aoMap && this.aoMap.isTexture) {
+    data.aoMap = this.aoMap.toJSON(meta).uuid;
+  }
+  if (this.aoMapIntensity) {
+    data.aoMapIntensity = this.aoMapIntensity;
+  }
 
-	//Rotation (SpriteMaterial)
-	if(this.rotation !== undefined)
-	{
-		data.rotation = this.rotation;
-	}
+  //Specular map (Lambert, Phong)
+  if (this.specularMap && this.specularMap.isTexture) {
+    data.specularMap = this.specularMap.toJSON(meta).uuid;
+  }
 
-	//Line (LineMaterial)
-	if(this.linewidth !== undefined)
-	{
-		data.linewidth = this.linewidth;
-	}
-	if(this.dashSize !== undefined)
-	{
-		data.dashSize = this.dashSize;
-	}
-	if(this.gapSize !== undefined)
-	{
-		data.gapSize = this.gapSize;
-	}
-	if(this.scale !== undefined)
-	{
-		data.scale = this.scale;
-	}
+  //Environment map (Lambert, Phong, Standard, PBR)
+  if (this.envMap && this.envMap.isTexture) {
+    data.envMap = this.envMap.toJSON(meta).uuid;
+    data.reflectivity = this.reflectivity; //Scale behind envMap
 
-	//Shading, blending
-	if(this.blending !== THREE.NormalBlending)
-	{
-		data.blending = this.blending;
-	}
-	if(this.side !== THREE.FrontSide)
-	{
-		data.side = this.side;
-	}
-	if(this.vertexColors !== THREE.NoColors)
-	{
-		data.vertexColors = this.vertexColors;
-	}
+    if (this.combine) {
+      data.combine = this.combine;
+    }
+    if (this.envMapIntensity) {
+      data.envMapIntensity = this.envMapIntensity;
+    }
+    if (this.refractionRatio) {
+      data.refractionRatio = this.refractionRatio;
+    }
+  }
 
-	data.flatShading = this.flatShading;
+  //Gradient map
+  if (this.gradientMap && this.gradientMap.isTexture) {
+    data.gradientMap = this.gradientMap.toJSON(meta).uuid;
+  }
 
-	//Opacity
-	if(this.opacity < 1)
-	{
-		data.opacity = this.opacity;
-	}
+  //Size (PointsMaterial)
+  if (this.size !== undefined) {
+    data.size = this.size;
+  }
+  if (this.sizeAttenuation !== undefined) {
+    data.sizeAttenuation = this.sizeAttenuation;
+  }
 
-	//Transparent
-	if(this.transparent === true)
-	{
-		data.transparent = this.transparent;
-	}
+  //Rotation (SpriteMaterial)
+  if (this.rotation !== undefined) {
+    data.rotation = this.rotation;
+  }
 
-	if(this.dithering === true)
-	{
-		data.dithering = true;
-	}
+  //Line (LineMaterial)
+  if (this.linewidth !== undefined) {
+    data.linewidth = this.linewidth;
+  }
+  if (this.dashSize !== undefined) {
+    data.dashSize = this.dashSize;
+  }
+  if (this.gapSize !== undefined) {
+    data.gapSize = this.gapSize;
+  }
+  if (this.scale !== undefined) {
+    data.scale = this.scale;
+  }
 
-	//Alpha
-	if(this.alphaTest > 0)
-	{
-		data.alphaTest = this.alphaTest;
-	}
-	if(this.premultipliedAlpha === true)
-	{
-		data.premultipliedAlpha = this.premultipliedAlpha;
-	}
-	
-	//Wireframe
-	if(this.wireframe === true)
-	{
-		data.wireframe = this.wireframe;
-	}
-	if(this.wireframeLinewidth > 1)
-	{
-		data.wireframeLinewidth = this.wireframeLinewidth;
-	}
-	if(this.wireframeLinecap !== "round")
-	{
-		data.wireframeLinecap = this.wireframeLinecap;
-	}
-	if(this.wireframeLinejoin !== "round")
-	{
-		data.wireframeLinejoin = this.wireframeLinejoin;
-	}
+  //Shading, blending
+  if (this.blending !== THREE.NormalBlending) {
+    data.blending = this.blending;
+  }
+  if (this.side !== THREE.FrontSide) {
+    data.side = this.side;
+  }
+  if (this.vertexColors !== THREE.NoColors) {
+    data.vertexColors = this.vertexColors;
+  }
 
-	//Skinning
-	data.skinning = this.skinning;
+  data.flatShading = this.flatShading;
 
-	//Morph targets
-	data.morphTargets = this.morphTargets;
+  //Opacity
+  if (this.opacity < 1) {
+    data.opacity = this.opacity;
+  }
 
-	//Morph normals
-	if(this.morphNormals !== undefined)
-	{
-		data.morphNormals = this.morphNormals;
-	}
+  //Transparent
+  if (this.transparent === true) {
+    data.transparent = this.transparent;
+  }
 
-	//Copied from Object3D.toJSON
-	function extractFromCache(cache)
-	{
-		var values = [];
+  if (this.dithering === true) {
+    data.dithering = true;
+  }
 
-		for(var key in cache)
-		{
-			var data = cache[key];
-			delete data.metadata;
-			values.push(data);
-		}
+  //Alpha
+  if (this.alphaTest > 0) {
+    data.alphaTest = this.alphaTest;
+  }
+  if (this.premultipliedAlpha === true) {
+    data.premultipliedAlpha = this.premultipliedAlpha;
+  }
 
-		return values;
-	}
+  //Wireframe
+  if (this.wireframe === true) {
+    data.wireframe = this.wireframe;
+  }
+  if (this.wireframeLinewidth > 1) {
+    data.wireframeLinewidth = this.wireframeLinewidth;
+  }
+  if (this.wireframeLinecap !== 'round') {
+    data.wireframeLinecap = this.wireframeLinecap;
+  }
+  if (this.wireframeLinejoin !== 'round') {
+    data.wireframeLinejoin = this.wireframeLinejoin;
+  }
 
-	if(meta === undefined)
-	{
-		var textures = extractFromCache(meta.textures);
-		var images = extractFromCache(meta.images);
-		var videos = extractFromCache(meta.videos);
+  //Skinning
+  data.skinning = this.skinning;
 
-		if(textures.length > 0)
-		{
-			data.textures = textures;
-		}
-		
-		if(images.length > 0)
-		{
-			data.images = images;
-		}
+  //Morph targets
+  data.morphTargets = this.morphTargets;
 
-		if(videos.length > 0)
-		{
-			data.videos = videos;
-		}
-	}
+  //Morph normals
+  if (this.morphNormals !== undefined) {
+    data.morphNormals = this.morphNormals;
+  }
 
-	return data;
+  //Copied from Object3D.toJSON
+  function extractFromCache(cache) {
+    var values = [];
+
+    for (var key in cache) {
+      var data = cache[key];
+      delete data.metadata;
+      values.push(data);
+    }
+
+    return values;
+  }
+
+  if (meta === undefined) {
+    var textures = extractFromCache(meta.textures);
+    var images = extractFromCache(meta.images);
+    var videos = extractFromCache(meta.videos);
+
+    if (textures.length > 0) {
+      data.textures = textures;
+    }
+
+    if (images.length > 0) {
+      data.images = images;
+    }
+
+    if (videos.length > 0) {
+      data.videos = videos;
+    }
+  }
+
+  return data;
 };

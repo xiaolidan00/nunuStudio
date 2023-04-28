@@ -228,14 +228,7 @@ ResourceManager.searchObject = function (object, manager, target) {
 
     //Geometries
     if (child instanceof THREE.Mesh || child instanceof THREE.SkinnedMesh) {
-      if (child.geometry.type === 'BufferGeometry' || child.geometry.type === 'Geometry') {
-        if (manager.geometries[child.geometry.uuid] === undefined) {
-          if (!child.geometry.name) {
-            child.geometry.name = getRandLetterNum();
-          }
-          resources.geometries[child.geometry.uuid] = child.geometry;
-        }
-      }
+      addGeometry(child);
     }
 
     //Textures
@@ -248,7 +241,17 @@ ResourceManager.searchObject = function (object, manager, target) {
       }
     }
   });
-
+  function addGeometry(child) {
+    console.log(child);
+    if (child.geometry.type === 'BufferGeometry' || child.geometry.type === 'Geometry') {
+      if (manager.geometries[child.geometry.uuid] === undefined) {
+        if (!child.geometry.name) {
+          child.geometry.name = getRandLetterNum();
+        }
+        resources.geometries[child.geometry.uuid] = child.geometry;
+      }
+    }
+  }
   function addMaterial(material) {
     addTexturesFromMaterial(material);
 

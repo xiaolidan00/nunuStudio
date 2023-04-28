@@ -580,8 +580,11 @@ SceneEditor.prototype.update = function () {
       children.update();
     });
   }
-
-  this.render();
+  try {
+    this.render();
+  } catch (error) {
+    console.log(error);
+  }
 
   if (this.stats !== null) {
     this.stats.end();

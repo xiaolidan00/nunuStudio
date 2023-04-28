@@ -11,6 +11,7 @@ function TextureAsset(parent) {
   };
 
   this.element.ondblclick = function () {
+    console.log(self);
     var Constructor = TextureEditor;
 
     if (self.asset instanceof VideoTexture) {

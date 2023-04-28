@@ -165,7 +165,6 @@ TextureChooser.prototype.loadTexture = function (file) {
 //Update texture preview
 TextureChooser.prototype.updatePreview = function () {
   var texture = this.texture;
-
   if (texture instanceof CanvasTexture) {
     this.video.style.display = 'none';
     this.img.style.display = 'block';

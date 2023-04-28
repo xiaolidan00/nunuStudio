@@ -1,5 +1,16 @@
 'use strict';
-
+function base64toFile(base, filename) {
+  let arr = base.split(',');
+  let mime = arr[0].match(/:(.*?);/)[1];
+  let bstr = atob(arr[1]);
+  let n = bstr.length;
+  let u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  //转换成file对象
+  return new File([u8arr], filename, { type: mime });
+}
 /**
  * Image chooser is used for the user to select images.
  *
@@ -35,7 +46,21 @@ function ImageChooser(parent) {
   this.element.ondragstart = Element.preventDefault;
   this.element.oncontextmenu = function (e) {
     if (self.value) {
-      self.value.export(self.value.name + '.' + self.value.encoding);
+      if (self.value.data.indexOf('data:image') == 0) {
+        let link = document.createElement('a');
+        link.href = window.URL.createObjectURL(base64toFile(self.value.data, self.value.name));
+        link.download = self.value.name;
+
+        link.style.display = 'none';
+        document.body.appendChild(link);
+
+        link.click();
+        body.removeChild(link);
+
+        window.URL.revokeObjectURL(link.href);
+      } else {
+        self.value.export(self.value.name + '.' + self.value.encoding);
+      }
     }
   };
 

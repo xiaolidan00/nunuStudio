@@ -223,7 +223,7 @@ ResourceManager.searchObject = function (object, manager, target) {
   });
 
   function addMaterial(material) {
-    //addTexturesFromMaterial(material);
+    addTexturesFromMaterial(material);
 
     if (manager.materials[material.uuid] === undefined) {
       resources.materials[material.uuid] = material;
@@ -231,21 +231,26 @@ ResourceManager.searchObject = function (object, manager, target) {
   }
 
   function addTexturesFromMaterial(material) {
-    addTexture(material.map);
-    addTexture(material.bumpMap);
-    addTexture(material.normalMap);
-    addTexture(material.displacementMap);
-    addTexture(material.specularMap);
-    addTexture(material.emissiveMap);
-    addTexture(material.alphaMap);
-    addTexture(material.roughnessMap);
-    addTexture(material.metalnessMap);
-    addTexture(material.envMap);
+    for (let k in material) {
+      if (material[k] instanceof THREE.Texture) {
+        addTexture(material[k]);
+      }
+    }
+    // addTexture(material.map);
+    // addTexture(material.bumpMap);
+    // addTexture(material.normalMap);
+    // addTexture(material.displacementMap);
+    // addTexture(material.specularMap);
+    // addTexture(material.emissiveMap);
+    // addTexture(material.alphaMap);
+    // addTexture(material.roughnessMap);
+    // addTexture(material.metalnessMap);
+    // addTexture(material.envMap);
   }
 
   function addTexture(texture) {
     if (texture !== null && texture !== undefined) {
-      //  addResourcesTexture(texture);
+      addResourcesTexture(texture);
 
       if (manager.textures[texture.uuid] === undefined) {
         resources.textures[texture.uuid] = texture;
@@ -259,32 +264,32 @@ ResourceManager.searchObject = function (object, manager, target) {
     }
   }
 
-  //   function addResourcesTexture(texture) {
-  //     //Image
-  //     if (texture.img instanceof Image) {
-  //       addImage(texture.img);
-  //     }
-  //     //Video
-  //     if (texture.video instanceof Video) {
-  //       if (manager.videos[texture.video.uuid] === undefined) {
-  //         resources.videos[texture.video.uuid] = texture.video;
-  //       }
-  //     }
-  //     //Images array
-  //     if (texture.images !== undefined) {
-  //       for (var i = 0; i < texture.images.length; i++) {
-  //         addImage(texture.images[i]);
-  //       }
-  //     }
-  //   }
+  function addResourcesTexture(texture) {
+    //Image
+    if (texture.img instanceof Image) {
+      addImage(texture.img);
+    }
+    //Video
+    if (texture.video instanceof Video) {
+      if (manager.videos[texture.video.uuid] === undefined) {
+        resources.videos[texture.video.uuid] = texture.video;
+      }
+    }
+    //Images array
+    if (texture.images !== undefined) {
+      for (var i = 0; i < texture.images.length; i++) {
+        addImage(texture.images[i]);
+      }
+    }
+  }
 
-  //   for (var i in manager.materials) {
-  //     addTexturesFromMaterial(manager.materials[i]);
-  //   }
+  for (var i in manager.materials) {
+    addTexturesFromMaterial(manager.materials[i]);
+  }
 
-  //   for (var i in manager.textures) {
-  //     addResourcesTexture(manager.textures[i]);
-  //   }
+  for (var i in manager.textures) {
+    addResourcesTexture(manager.textures[i]);
+  }
 
   return resources;
 };

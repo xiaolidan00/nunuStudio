@@ -1,83 +1,81 @@
-"use strict";
+'use strict';
 
-/** 
+/**
  * The material renderer is used to generate preview thumbnails.
  *
  * @class MaterialRenderer
  * @extends {PreviewRenderer}
  */
-function MaterialRenderer()
-{
-	PreviewRenderer.call(this);
+function MaterialRenderer() {
+  PreviewRenderer.call(this);
 
-	//Camera
-	this.camera = new OrthographicCamera(2.15, 1);
+  //Camera
+  this.camera = new OrthographicCamera(2.15, 1);
 
-	//Sphere
-	this.sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16));
-	this.scene.add(this.sphere);
+  //Sphere
+  this.sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16));
+  this.scene.add(this.sphere);
 
-	//Sprite
-	this.sprite = new THREE.Sprite();
-	this.sprite.scale.set(2, 2, 1);
-	this.scene.add(this.sprite);
+  //Sprite
+  this.sprite = new THREE.Sprite();
+  this.sprite.scale.set(2, 2, 1);
+  this.scene.add(this.sprite);
 
-	//Ambient light
-	var ambient = new THREE.AmbientLight(0x999999);
-	this.scene.add(ambient);
+  //Ambient light
+  var ambient = new THREE.AmbientLight(0x999999);
+  this.scene.add(ambient);
 
-	//Point light
-	var point = new THREE.PointLight(0x999999);
-	point.position.set(-0.5, 1, 1.5);
-	this.scene.add(point);
+  //Point light
+  var point = new THREE.PointLight(0x999999);
+  point.position.set(-0.5, 1, 1.5);
+  this.scene.add(point);
 }
 
 MaterialRenderer.prototype = Object.create(PreviewRenderer.prototype);
 
-MaterialRenderer.generateElement = function(material)
-{
-	var preview = document.createElement("img");
-	MaterialRenderer.render(material, function(url)
-	{
-		preview.src = url;
-	});
+MaterialRenderer.generateElement = function (material) {
+  var preview = document.createElement('img');
+  MaterialRenderer.render(material, function (url) {
+    preview.src = url;
+  });
 
-	return preview;
+  return preview;
 };
 
-MaterialRenderer.render = function(material, onRender)
-{
-	if(MaterialRenderer.instance === undefined)
-	{
-		MaterialRenderer.instance = new MaterialRenderer();
-	}
-
-	MaterialRenderer.instance.render(material, onRender);
+MaterialRenderer.render = function (material, onRender) {
+  if (MaterialRenderer.instance === undefined) {
+    MaterialRenderer.instance = new MaterialRenderer();
+  }
+  try {
+    if (MaterialRenderer.instance?.render && material) {
+      MaterialRenderer.instance?.render(material, onRender);
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-MaterialRenderer.prototype.render = function(material, onRender)
-{
-	//Set material
-	if(material instanceof THREE.SpriteMaterial)
-	{
-		this.sphere.visible = false;
-		this.sprite.visible = true;
+MaterialRenderer.prototype.render = function (material, onRender) {
+  //Set material
+  if (material instanceof THREE.SpriteMaterial) {
+    this.sphere.visible = false;
+    this.sprite.visible = true;
 
-		this.sprite.material = material;
-		this.camera.position.set(0, 0, 0.5);
-	}
-	else
-	{
-		this.sprite.visible = false;
-		this.sphere.visible = true;
+    this.sprite.material = material;
+    this.camera.position.set(0, 0, 0.5);
+  } else {
+    this.sprite.visible = false;
+    this.sphere.visible = true;
 
-		this.sphere.material = material;
-		this.camera.position.set(0, 0, 1.5);
-	}
+    this.sphere.material = material;
+    this.camera.position.set(0, 0, 1.5);
+  }
 
-	//Render
-	this.renderer.render(this.scene, this.camera);
+  //Render
+  if (this.renderer?.render) {
+    this.renderer.render(this.scene, this.camera);
+  }
 
-	//Callback
-	onRender(this.canvas.toDataURL());
+  //Callback
+  onRender(this.canvas.toDataURL());
 };

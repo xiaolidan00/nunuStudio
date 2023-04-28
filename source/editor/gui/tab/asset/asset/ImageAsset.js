@@ -19,6 +19,9 @@ function ImageAsset(parent) {
   this.element.onmouseenter = function () {
     self.element.title = 'Image';
   };
+  // this.preview.onerror = function (event) {
+  //   Editor.addAction(new RemoveResourceAction(self.asset, Editor.program, 'images'));
+  // };
 
   //Context menu event
   this.element.oncontextmenu = function (event) {

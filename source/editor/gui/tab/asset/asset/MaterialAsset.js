@@ -142,7 +142,7 @@ function MaterialAsset(parent) {
           //Load
           var material = loader.parse(json);
           material.uuid = THREE.Math.generateUUID();
-
+          material.name = material.name + 'copy';
           //Add
           Editor.program.addMaterial(material);
           Editor.gui.assetExplorer.updateObjectsView();
@@ -188,7 +188,7 @@ MaterialAsset.prototype.destroy = function () {
 MaterialAsset.prototype.highlightMaterial = function () {
   if (this.asset instanceof THREE.Material && this.asset.color !== undefined) {
     this.materialColor.copy(this.asset.color);
-    this.asset.color.setRGB(1, 1, 0);
+    this.asset.color.setRGB(1, 0, 0);
     this.materialHighlighted = true;
   }
 };

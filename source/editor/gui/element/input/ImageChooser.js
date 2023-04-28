@@ -33,6 +33,11 @@ function ImageChooser(parent) {
 
   this.element.ondragover = Element.preventDefault;
   this.element.ondragstart = Element.preventDefault;
+  this.element.oncontextmenu = function (e) {
+    if (self.value) {
+      self.value.export(self.value.name + '.' + self.value.encoding);
+    }
+  };
 
   //On drop get file dropped
   this.element.ondrop = function (event) {

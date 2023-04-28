@@ -4,6 +4,7 @@ function ImageAsset(parent) {
   Asset.call(this, parent);
 
   this.preview = document.createElement('img');
+  this.preview.crossOrigin = 'anonymous';
   this.preview.draggable = true;
   this.preview.style.position = 'absolute';
   this.preview.style.top = '5%';

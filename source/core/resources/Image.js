@@ -14,6 +14,17 @@ function createImageCanvas(data, callback) {
     callback(canvas.toDataURL('image/png'));
   };
 }
+function image2Base64(img1, callback) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = img1.naturalWidth;
+  canvas.height = img1.naturalHeight;
+  ctx.rect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'rgba(255,255,255,0)';
+  ctx.fill();
+  ctx.drawImage(img1, 0, 0, canvas.width, canvas.height);
+  callback(canvas.toDataURL('image/png'));
+}
 /**
  * Image class is used to store image data that is used to create Textures.
  *

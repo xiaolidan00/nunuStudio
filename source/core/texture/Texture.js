@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
 /**
  * Image texture constructor, with support for GIF animations.
- * 
+ *
  * It is based on THREE.Texture, original documentation can be found here https://threejs.org/docs/index.html#Reference/Textures/Texture
- * 
+ *
  * @class Texture
  * @extends {Texture}
  * @module Textures
@@ -26,19 +26,19 @@
  */
 /**
  * How much a single repetition of the texture is offset from the beginning, in each direction U and V.
- * 
+ *
  * @property offset
  * @type {Vector2}
  */
 /**
  * How many times the texture is repeated across the surface, in each direction U and V.  If repeat is set greater than 1 in either direction, the corresponding Wrap parameter should also be set to .
- * 
+ *
  * @property repeat
  * @type {Vector2}
  */
 /**
  * Indicates where the center of rotation is. To rotate around the center point set this value to (0.5, 0.5).
- * 
+ *
  * @property center
  * @type {Vector2}
  */
@@ -67,104 +67,118 @@
  * @property mipmaps
  * @type {Array}
  */
-function Texture(image, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding)
-{
-	/**
-	 * Image attached to the texture
-	 * 
-	 * @property img
-	 * @type {Image}
-	 */
-	if(typeof image === "string")
-	{
-		this.img = new Image(image);
-	}
-	else if(image === undefined)
-	{
-		this.img = new Image();
-	}
-	else
-	{
-		this.img = image;
-	}
+function Texture(
+  image,
+  mapping,
+  wrapS,
+  wrapT,
+  magFilter,
+  minFilter,
+  format,
+  type,
+  anisotropy,
+  encoding
+) {
+  /**
+   * Image attached to the texture
+   *
+   * @property img
+   * @type {Image}
+   */
+  if (typeof image === 'string') {
+    this.img = new Image(image);
+  } else if (image === undefined) {
+    this.img = new Image();
+  } else {
+    this.img = image;
+  }
 
-	THREE.Texture.call(this, document.createElement("img"), mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
-	
-	var self = this;
+  THREE.Texture.call(
+    this,
+    document.createElement('img'),
+    mapping,
+    wrapS,
+    wrapT,
+    magFilter,
+    minFilter,
+    format,
+    type,
+    anisotropy,
+    encoding
+  );
 
-	/**
-	 * Name of the texture (doesn't need to be unique).
-	 * @property name
-	 * @type {String}
-	*/
-	this.name = "texture";
-	this.category = "Image";
+  var self = this;
+  console.log(self);
+  /**
+   * Name of the texture (doesn't need to be unique).
+   * @property name
+   * @type {String}
+   */
+  this.name = 'texture';
+  this.category = 'Image';
 
-	/**
-	 * Flag used to know is the texture has been disposed.
-	 * 
-	 * Is used to control animation when using a gif as a texture.
-	 * 
-	 * @property disposed
-	 * @type {boolean}
-	 * @default false
-	 */
-	this.disposed = false;
+  /**
+   * Flag used to know is the texture has been disposed.
+   *
+   * Is used to control animation when using a gif as a texture.
+   *
+   * @property disposed
+   * @type {boolean}
+   * @default false
+   */
+  this.disposed = false;
 
-	this.format = this.img.hasTransparency() ? THREE.RGBAFormat : THREE.RGBFormat;
+  this.format = this.img.hasTransparency() ? THREE.RGBAFormat : THREE.RGBFormat;
 
-	/**
-	 * DOM element attached to the texture
-	 * 
-	 * @property image
-	 * @type {DOM}
-	 */
-	this.image.crossOrigin = "anonymous";
-	this.image.src = this.img.data;
-	this.image.onload = function()
-	{
-		self.needsUpdate = true;
-	};
-	this.image.onerror = function()
-	{
-		console.log("nunuStudio: Failed to load image " + self.img.uuid + " data.");
-		self.img.createSolidColor();
-		self.image.src = self.img.data;
-		self.needsUpdate = true;
-	};
+  /**
+   * DOM element attached to the texture
+   *
+   * @property image
+   * @type {DOM}
+   */
+  this.image.crossOrigin = 'anonymous';
+  this.image.src = this.img.data;
+  this.image.onload = function () {
+    image2Base64(self.image, (base64) => {
+      self.img.data = base64;
+    });
+    self.needsUpdate = true;
+  };
+  this.image.onerror = function () {
+    console.log('nunuStudio: Failed to load image ' + self.img.uuid + ' data.');
+    self.img.createSolidColor();
+    self.image.src = self.img.data;
+    self.needsUpdate = true;
+  };
 
-	//Check if image is animated
-	if(this.img.encoding === "gif")
-	{
-		this.generateMipmaps = false;
-		this.magFilter = THREE.LinearFilter;
-		this.minFilter = THREE.LinearFilter;
+  //Check if image is animated
+  if (this.img.encoding === 'gif') {
+    this.generateMipmaps = false;
+    this.magFilter = THREE.LinearFilter;
+    this.minFilter = THREE.LinearFilter;
 
-		function update()
-		{
-			if(!self.disposed)
-			{
-				self.needsUpdate = true;
-				requestAnimationFrame(update);
-			}
-		}
-		
-		update();
-	}
+    function update() {
+      if (!self.disposed) {
+        self.needsUpdate = true;
+        requestAnimationFrame(update);
+      }
+    }
+
+    update();
+  }
 }
 
 Texture.prototype = Object.create(THREE.Texture.prototype);
 
 /**
  * Dispose texture.
- * 
+ *
  * @method dispose
  */
-Texture.prototype.dispose = function()
-{	
-	THREE.Texture.prototype.dispose.call(this);
+Texture.prototype.dispose = function () {
+  THREE.Texture.prototype.dispose.call(this);
 
-	this.disposed = true;
+  this.disposed = true;
 };
 
 /**
@@ -174,12 +188,11 @@ Texture.prototype.dispose = function()
  * @param {Object} meta
  * @method toJSON
  */
-Texture.prototype.toJSON = function(meta)
-{
-	var data = THREE.Texture.prototype.toJSON.call(this, meta);
-	var image = this.img.toJSON(meta);
+Texture.prototype.toJSON = function (meta) {
+  var data = THREE.Texture.prototype.toJSON.call(this, meta);
+  var image = this.img.toJSON(meta);
 
-	data.image = image.uuid;
+  data.image = image.uuid;
 
-	return data;
+  return data;
 };

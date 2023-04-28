@@ -11,6 +11,20 @@ function base64toFile(base, filename) {
   //转换成file对象
   return new File([u8arr], filename, { type: mime });
 }
+
+function saveAs(data, fileName) {
+  let link = document.createElement('a');
+  link.href = window.URL.createObjectURL(data);
+  link.download = fileName;
+
+  link.style.display = 'none';
+  document.body.appendChild(link);
+
+  link.click();
+  body.removeChild(link);
+
+  window.URL.revokeObjectURL(link.href);
+}
 /**
  * Image chooser is used for the user to select images.
  *
@@ -47,17 +61,7 @@ function ImageChooser(parent) {
   this.element.oncontextmenu = function (e) {
     if (self.value) {
       if (self.value.data.indexOf('data:image') == 0) {
-        let link = document.createElement('a');
-        link.href = window.URL.createObjectURL(base64toFile(self.value.data, self.value.name));
-        link.download = self.value.name;
-
-        link.style.display = 'none';
-        document.body.appendChild(link);
-
-        link.click();
-        body.removeChild(link);
-
-        window.URL.revokeObjectURL(link.href);
+        saveAs(base64toFile(self.value.data, self.value.name), self.value.name);
       } else {
         self.value.export(self.value.name + '.' + self.value.encoding);
       }

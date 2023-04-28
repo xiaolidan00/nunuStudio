@@ -1,20 +1,19 @@
-"use strict";
+'use strict';
 
 /**
  * Geometry loader can be used to load geometry files.
- * 
+ *
  * @class GeometryLoader
  * @module Loaders
  * @param {Object} manager
  */
-function GeometryLoader(manager)
-{
-	this.manager = (manager !== undefined) ? manager : THREE.DefaultLoadingManager;
+function GeometryLoader(manager) {
+  this.manager = manager !== undefined ? manager : THREE.DefaultLoadingManager;
 
-	this.geometryLoader = new LegacyGeometryLoader();
-	this.bufferGeometryLoader = new THREE.BufferGeometryLoader();
+  this.geometryLoader = new LegacyGeometryLoader();
+  this.bufferGeometryLoader = new THREE.BufferGeometryLoader();
 
-	this.shapes = {};
+  this.shapes = {};
 }
 
 /**
@@ -23,12 +22,10 @@ function GeometryLoader(manager)
  * @method setShapes
  * @param {Array} shapes
  */
-GeometryLoader.prototype.setShapes = function(shapes)
-{
-	this.shapes = shapes;
-	return this;
+GeometryLoader.prototype.setShapes = function (shapes) {
+  this.shapes = shapes;
+  return this;
 };
-
 
 /**
  * Load geometry json file from URL.
@@ -39,13 +36,16 @@ GeometryLoader.prototype.setShapes = function(shapes)
  * @param {Function} onProgress
  * @param {Function} onError
  */
-GeometryLoader.prototype.load = function(url, onLoad, onProgress, onError)
-{
-	var loader = new THREE.FileLoader(this.manager);
-	loader.load(url, function(text)
-	{
-		onLoad(self.parse(JSON.parse(text)));
-	}, onProgress, onError);
+GeometryLoader.prototype.load = function (url, onLoad, onProgress, onError) {
+  var loader = new THREE.FileLoader(this.manager);
+  loader.load(
+    url,
+    function (text) {
+      onLoad(self.parse(JSON.parse(text)));
+    },
+    onProgress,
+    onError
+  );
 };
 
 /**
@@ -55,114 +55,171 @@ GeometryLoader.prototype.load = function(url, onLoad, onProgress, onError)
  * @param {Object} json
  * @return {Geometry} Geometry loaded from json.
  */
-GeometryLoader.prototype.parse = function(data)
-{
-	var geometry;
-	
-	switch(data.type)
-	{
-		case "PlaneGeometry":
-		case "PlaneBufferGeometry":
-			geometry = new THREE[data.type](data.width, data.height, data.widthSegments, data.heightSegments);
-			break;
+GeometryLoader.prototype.parse = function (data) {
+  var geometry;
 
-		case "BoxGeometry":
-		case "BoxBufferGeometry":
-		case "CubeGeometry":
-			geometry = new THREE[data.type](data.width, data.height, data.depth, data.widthSegments, data.heightSegments, data.depthSegments);
-			break;
+  switch (data.type) {
+    case 'PlaneGeometry':
+    case 'PlaneBufferGeometry':
+      geometry = new THREE[data.type](
+        data.width,
+        data.height,
+        data.widthSegments,
+        data.heightSegments
+      );
+      break;
 
-		case "CircleGeometry":
-		case "CircleBufferGeometry":
-			geometry = new THREE[data.type](data.radius, data.segments, data.thetaStart, data.thetaLength);
-			break;
+    case 'BoxGeometry':
+    case 'BoxBufferGeometry':
+    case 'CubeGeometry':
+      geometry = new THREE[data.type](
+        data.width,
+        data.height,
+        data.depth,
+        data.widthSegments,
+        data.heightSegments,
+        data.depthSegments
+      );
+      break;
 
-		case "CylinderGeometry":
-		case "CylinderBufferGeometry":
-			geometry = new THREE[data.type](data.radiusTop, data.radiusBottom, data.height, data.radialSegments, data.heightSegments, data.openEnded, data.thetaStart, data.thetaLength);
-			break;
+    case 'CircleGeometry':
+    case 'CircleBufferGeometry':
+      geometry = new THREE[data.type](
+        data.radius,
+        data.segments,
+        data.thetaStart,
+        data.thetaLength
+      );
+      break;
 
-		case "ConeGeometry":
-		case "ConeBufferGeometry":
-			geometry = new THREE[data.type](data.radius, data.height, data.radialSegments, data.heightSegments, data.openEnded, data.thetaStart, data.thetaLength);
-			break;
+    case 'CylinderGeometry':
+    case 'CylinderBufferGeometry':
+      geometry = new THREE[data.type](
+        data.radiusTop,
+        data.radiusBottom,
+        data.height,
+        data.radialSegments,
+        data.heightSegments,
+        data.openEnded,
+        data.thetaStart,
+        data.thetaLength
+      );
+      break;
 
-		case "SphereGeometry":
-		case "SphereBufferGeometry":
-			geometry = new THREE[data.type](data.radius, data.widthSegments, data.heightSegments, data.phiStart, data.phiLength, data.thetaStart, data.thetaLength);
-			break;
+    case 'ConeGeometry':
+    case 'ConeBufferGeometry':
+      geometry = new THREE[data.type](
+        data.radius,
+        data.height,
+        data.radialSegments,
+        data.heightSegments,
+        data.openEnded,
+        data.thetaStart,
+        data.thetaLength
+      );
+      break;
 
-		case "DodecahedronGeometry":
-		case "IcosahedronGeometry":
-		case "OctahedronGeometry":
-		case "TetrahedronGeometry":
-		case "DodecahedronBufferGeometry":
-		case "IcosahedronBufferGeometry":
-		case "OctahedronBufferGeometry":
-		case "TetrahedronBufferGeometry":
-			geometry = new THREE[data.type](data.radius, data.detail);
-			break;
+    case 'SphereGeometry':
+    case 'SphereBufferGeometry':
+      geometry = new THREE[data.type](
+        data.radius,
+        data.widthSegments,
+        data.heightSegments,
+        data.phiStart,
+        data.phiLength,
+        data.thetaStart,
+        data.thetaLength
+      );
+      break;
 
-		case "PolyhedronGeometry":
-		case "PolyhedronBufferGeometry":
-			geometry = new THREE[data.type](data.radius, data.indices, data.radius, data.detail);
-			break;
+    case 'DodecahedronGeometry':
+    case 'IcosahedronGeometry':
+    case 'OctahedronGeometry':
+    case 'TetrahedronGeometry':
+    case 'DodecahedronBufferGeometry':
+    case 'IcosahedronBufferGeometry':
+    case 'OctahedronBufferGeometry':
+    case 'TetrahedronBufferGeometry':
+      geometry = new THREE[data.type](data.radius, data.detail);
+      break;
 
-		case "RingGeometry":
-		case "RingBufferGeometry":
-			geometry = new THREE[data.type](data.innerRadius, data.outerRadius, data.thetaSegments, data.phiSegments, data.thetaStart, data.thetaLength);
-			break;
+    case 'PolyhedronGeometry':
+    case 'PolyhedronBufferGeometry':
+      geometry = new THREE[data.type](data.radius, data.indices, data.radius, data.detail);
+      break;
 
-		case "TorusGeometry":
-		case "TorusBufferGeometry":
-			geometry = new THREE[data.type](data.radius, data.tube, data.radialSegments, data.tubularSegments, data.arc);
-			break;
+    case 'RingGeometry':
+    case 'RingBufferGeometry':
+      geometry = new THREE[data.type](
+        data.innerRadius,
+        data.outerRadius,
+        data.thetaSegments,
+        data.phiSegments,
+        data.thetaStart,
+        data.thetaLength
+      );
+      break;
 
-		case "TorusKnotGeometry":
-		case "TorusKnotBufferGeometry":
-			geometry = new THREE[data.type](data.radius, data.tube, data.tubularSegments, data.radialSegments, data.p, data.q);
-			break;
+    case 'TorusGeometry':
+    case 'TorusBufferGeometry':
+      geometry = new THREE[data.type](
+        data.radius,
+        data.tube,
+        data.radialSegments,
+        data.tubularSegments,
+        data.arc
+      );
+      break;
 
-		case "LatheGeometry":
-		case "LatheBufferGeometry":
-			geometry = new THREE[data.type](data.points, data.segments, data.phiStart, data.phiLength);
-			break;
-			
-		case "ShapeGeometry": 
-		case "ShapeBufferGeometry": 
-			var geometryShapes = [];
-			for(var j = 0, jl = data.shapes.length; j < jl; j++)
-			{
-				var shape = this.shapes[data.shapes[j]];
-				geometryShapes.push(shape);
-			}
-			geometry = new THREE[data.type](geometryShapes, data.curveSegments);
-			break; 
+    case 'TorusKnotGeometry':
+    case 'TorusKnotBufferGeometry':
+      geometry = new THREE[data.type](
+        data.radius,
+        data.tube,
+        data.tubularSegments,
+        data.radialSegments,
+        data.p,
+        data.q
+      );
+      break;
 
-		case "BufferGeometry":
-			geometry = this.bufferGeometryLoader.parse(data);
-			break;
+    case 'LatheGeometry':
+    case 'LatheBufferGeometry':
+      geometry = new THREE[data.type](data.points, data.segments, data.phiStart, data.phiLength);
+      break;
 
-		case "Geometry":
-			geometry = this.geometryLoader.parse(data.data).geometry;
-			break;
+    case 'ShapeGeometry':
+    case 'ShapeBufferGeometry':
+      var geometryShapes = [];
+      for (var j = 0, jl = data.shapes.length; j < jl; j++) {
+        var shape = this.shapes[data.shapes[j]];
+        geometryShapes.push(shape);
+      }
+      geometry = new THREE[data.type](geometryShapes, data.curveSegments);
+      break;
 
-		default:
-			console.warn("GeometryLoader: Unsupported geometry type " + data.type);
-			geometry = new THREE.Geometry();
-			break;
-	}
+    case 'BufferGeometry':
+      geometry = this.bufferGeometryLoader.parse(data);
+      console.log(geometry);
+      break;
 
-	geometry.uuid = data.uuid;
+    case 'Geometry':
+      geometry = this.geometryLoader.parse(data.data).geometry;
+      break;
 
-	if(data.name !== undefined)
-	{
-		geometry.name = data.name;
-	}
-	else
-	{
-		geometry.name = "geometry";
-	}
+    default:
+      console.warn('GeometryLoader: Unsupported geometry type ' + data.type);
+      geometry = new THREE.Geometry();
+      break;
+  }
 
-	return geometry;
+  geometry.uuid = data.uuid;
+
+  if (data.name !== undefined) {
+    geometry.name = data.name;
+  } else {
+    geometry.name = 'geometry';
+  }
+
+  return geometry;
 };

@@ -18,6 +18,9 @@ function GeometryAsset(parent) {
   this.element.onmouseenter = function () {
     self.element.title = 'Geometry';
   };
+  this.element.ondbclick = function () {
+    console.log(self);
+  };
   //Context menu event
   this.element.oncontextmenu = function (event) {
     var context = new ContextMenu(DocumentBody);

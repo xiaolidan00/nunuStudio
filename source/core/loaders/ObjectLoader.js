@@ -54,8 +54,10 @@ ObjectLoader.prototype.load = function (url, onLoad, onProgress, onError) {
  * @return {Object} Program loaded from json data.
  */
 ObjectLoader.prototype.parse = function (json, onLoad) {
+  console.log(json);
   var resources = this.parseResources(json.resources);
   var shapes = this.parseShape(json.shapes);
+  console.log(shapes);
   var geometries = this.parseGeometries(json.geometries, shapes);
   var images = this.parseImages(json.images);
   var videos = this.parseVideos(json.videos);

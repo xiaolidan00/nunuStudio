@@ -69,7 +69,6 @@ function Image(url, encoding) {
   } else {
     this.createSolidColor();
   }
-  console.log(this);
 }
 
 Image.prototype = Object.create(Resource.prototype);

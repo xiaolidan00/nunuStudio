@@ -133,7 +133,31 @@ ResourceManager.prototype.dispose = function () {
     this.materials[i].dispose();
   }
 };
+var LetterNum = [];
+for (let i = 48; i <= 57; i++) {
+  LetterNum.push(String.fromCharCode(i));
+}
+for (let i = 65; i <= 90; i++) {
+  LetterNum.push(String.fromCharCode(i));
+}
 
+for (let i = 97; i <= 122; i++) {
+  LetterNum.push(String.fromCharCode(i));
+}
+var randIdMap = {};
+function getRandLetterNum(len = 8) {
+  let str = [];
+
+  for (let i = 0; i < len; i++) {
+    str.push(LetterNum[Math.round(Math.random() * LetterNum.length) % LetterNum.length]);
+  }
+  let id = str.join('');
+  if (randIdMap[id]) {
+    return getRandLetterNum(len);
+  }
+  randIdMap[id] = true;
+  return id;
+}
 /**
  * Searches the object and all its children for resources that still dont exist in the resource manager.
  *
@@ -206,6 +230,9 @@ ResourceManager.searchObject = function (object, manager, target) {
     if (child instanceof THREE.Mesh || child instanceof THREE.SkinnedMesh) {
       if (child.geometry.type === 'BufferGeometry' || child.geometry.type === 'Geometry') {
         if (manager.geometries[child.geometry.uuid] === undefined) {
+          if (!child.geometry.name) {
+            child.geometry.name = getRandLetterNum();
+          }
           resources.geometries[child.geometry.uuid] = child.geometry;
         }
       }

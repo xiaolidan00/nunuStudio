@@ -108,7 +108,6 @@ function Texture(
   );
 
   var self = this;
-  console.log(self);
   /**
    * Name of the texture (doesn't need to be unique).
    * @property name

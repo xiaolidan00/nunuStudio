@@ -773,7 +773,9 @@ Editor.setProgram = function (program) {
     //Tree view
     Editor.gui.tree.attach(Editor.program);
     Editor.gui.assetExplorer.attach(Editor.program);
-
+    program.children.forEach((scene) => {
+      Editor.addObject(scene, program);
+    });
     //History
     Editor.history = new History(Editor.settings.general.historySize);
 
@@ -820,6 +822,7 @@ Editor.loadProgram = function (file, binary) {
 
       Editor.setOpenFile(file);
       Editor.setProgram(program);
+      console.log(program);
 
       Editor.alert(Locale.projectLoaded);
     } catch (e) {

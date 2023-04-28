@@ -244,17 +244,6 @@ MaterialEditor.prototype.destroy = function () {
   this.canvas.destroy();
 };
 
-function updateObjectTreeLabel(root, material) {
-  if (root.object.isMesh && root.object.material?.uuid == material.uuid) {
-    root.labelText.data = getObjName(root.object);
-  }
-  if (root.children?.length) {
-    root.children.forEach((item) => {
-      updateObjectTreeLabel(item, material);
-    });
-  }
-}
-
 //Update object data
 MaterialEditor.prototype.updateMetadata = function () {
   if (this.material !== null) {
@@ -262,7 +251,7 @@ MaterialEditor.prototype.updateMetadata = function () {
     if (this.material.name !== undefined) {
       this.setName(this.material.name);
       this.name.setText(this.material.name);
-      updateObjectTreeLabel(Editor.gui.tree.root, this.material);
+      Editor.gui.tree.updateObjsMatName(this.material);
     }
 
     this.scene.background = this.material.envMap !== null ? this.material.envMap : null;

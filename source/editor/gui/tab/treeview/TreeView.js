@@ -66,6 +66,19 @@ TreeView.prototype.selectByName = function (search) {
 
   filterRecursive(this.root);
 };
+function updateObjectTreeLabel(root, material) {
+  if (root.object.isMesh && root.object.material?.uuid == material.uuid) {
+    root.updateLabelText();
+  }
+  if (root.children?.length) {
+    root.children.forEach((item) => {
+      updateObjectTreeLabel(item, material);
+    });
+  }
+}
+TreeView.prototype.updateObjsMatName = function (material) {
+  updateObjectTreeLabel(Editor.gui.tree.root, material);
+};
 
 /**
  * Attach a program to the tree view.

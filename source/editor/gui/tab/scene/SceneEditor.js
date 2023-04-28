@@ -764,8 +764,9 @@ SceneEditor.prototype.resetCanvas = function () {
         material = new THREE.SpriteMaterial({ map: texture, color: 0xffffff });
         material.name = texture.name;
       }
-
+      Editor.program.addMaterial(material);
       Editor.addAction(new ChangeAction(object, 'material', material));
+      Editor.gui.tree.updateObjsMatName(material);
     }
 
     //Dragged file

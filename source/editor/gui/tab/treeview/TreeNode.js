@@ -411,6 +411,7 @@ function TreeNode(container) {
       self.object.traverse(function (children) {
         if (children.material !== undefined) {
           actions.push(new ChangeAction(children, 'material', object));
+          self.updateLabelText();
         }
       });
 
@@ -631,14 +632,15 @@ TreeNode.prototype.setBorder = function (place) {
  * @method getObjName
  * @param {THREE.Object3D} object
  */
-function getObjName(object) {
-  let objName = object.name;
-  if (object.isMesh && object.material?.name) {
-    let type = object.material.type.replace('Material', '');
-    objName += `(${object.material.name}-${type})`;
+
+TreeNode.prototype.updateLabelText = function () {
+  let objName = this.object.name;
+  if (this.object.isMesh && this.object.material?.name) {
+    let type = this.object.material.type.replace('Material', '');
+    objName += `(${this.object.material.name}-${type})`;
   }
-  return objName;
-}
+  this.labelText.data = objName;
+};
 
 /**
  * Attach a object to this tree element, the icon and name of the node is set automatically.
@@ -655,7 +657,7 @@ TreeNode.prototype.attach = function (object) {
   this.setSelected(Editor.isSelected(object));
 
   this.element.draggable = !object.locked;
-  this.labelText.data = getObjName(object);
+  this.updateLabelText();
   this.icon.src = this.object.locked ? ObjectIcons.locked : ObjectIcons.get(object.type);
   this.arrow.src = this.folded ? TreeNode.ARROW_RIGHT : TreeNode.ARROW_DOWN;
 };
@@ -767,7 +769,7 @@ TreeNode.prototype.updateInterface = function () {
 
     this.icon.style.left = 25 + offset + 'px';
     this.label.style.left = 45 + offset + 'px';
-    this.labelText.data = getObjName(this.object);
+    this.updateLabelText();
 
     this.element.style.display = 'block';
     this.element.style.top = this.position.y + 'px';

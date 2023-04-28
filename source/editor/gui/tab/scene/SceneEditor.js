@@ -319,25 +319,25 @@ function SceneEditor(parent, closeable, container, index) {
   this.manager.add(document.body, 'keydown', function (event) {
     var key = event.keyCode;
 
-    if (event.ctrlKey) {
-      if (self.container.focused) {
-        if (key === Keyboard.NUM1) {
-          self.sideBar.selectTool(SceneEditor.SELECT);
-        } else if (key === Keyboard.NUM2) {
-          self.sideBar.selectTool(SceneEditor.MOVE);
-        } else if (key === Keyboard.NUM3) {
-          self.sideBar.selectTool(SceneEditor.SCALE);
-        } else if (key === Keyboard.NUM4) {
-          self.sideBar.selectTool(SceneEditor.ROTATE);
-        } else if (key === Keyboard.C) {
-          Editor.copyObject();
-        } else if (key === Keyboard.V) {
-          Editor.pasteObject();
-        } else if (key === Keyboard.X) {
-          Editor.cutObject();
-        }
+    // if (event.ctrlKey) {
+    if (self.container.focused) {
+      if (key === Keyboard.Q) {
+        self.sideBar.selectTool(SceneEditor.SELECT);
+      } else if (key === Keyboard.W) {
+        self.sideBar.selectTool(SceneEditor.MOVE);
+      } else if (key === Keyboard.E) {
+        self.sideBar.selectTool(SceneEditor.SCALE);
+      } else if (key === Keyboard.R) {
+        self.sideBar.selectTool(SceneEditor.ROTATE);
+      } else if (key === Keyboard.C) {
+        Editor.copyObject();
+      } else if (key === Keyboard.V) {
+        Editor.pasteObject();
+      } else if (key === Keyboard.X) {
+        Editor.cutObject();
       }
     }
+    // }
   });
 }
 

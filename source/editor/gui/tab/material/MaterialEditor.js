@@ -15,6 +15,7 @@ function MaterialEditor(parent, closeable, container, index) {
 
   //Canvas
   this.canvas = new RendererCanvas();
+
   this.canvas.setOnResize(function (x, y) {
     self.camera.aspect = x / y;
     self.camera.updateProjectionMatrix();

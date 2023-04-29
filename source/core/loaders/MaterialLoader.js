@@ -63,10 +63,22 @@ MaterialLoader.prototype.parse = function (json) {
     return textures[name];
   }
 
-  if (json.type == 'ShaderMaterial') {
-    json.type = 'MeshStandardMaterial';
-    console.log('ShaderMaterial', json);
-    return;
+  if (json.type === 'ShaderMaterial') {
+    json.type = 'MeshBasicMaterial';
+    let m = new THREE.MeshBasicMaterial();
+    for (let k in m) {
+      if (m[k] !== undefined && json[k] !== undefined) {
+        if (k.indexOf('Map') >= 0 || k == 'map') {
+          m[k] = getTexture(json[k]);
+        } else if (m[k] instanceof THREE.Color) {
+          m[k].setHex(json[k]);
+        } else {
+          m[k] = json[k];
+        }
+      }
+    }
+
+    return m;
   }
   var material = new window[json.type]();
 
@@ -372,6 +384,5 @@ MaterialLoader.prototype.parse = function (json) {
       material.materials.push(this.parse(json.materials[i]));
     }
   }
-
   return material;
 };

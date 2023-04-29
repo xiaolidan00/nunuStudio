@@ -73,6 +73,14 @@ ObjectLoader.prototype.parse = function (json, onLoad) {
     fonts,
     resources
   );
+  let geom = [];
+  for (let k in geometries) {
+    let item = geometries[k];
+    if (item.type === 'BufferGeometry' || item.type === 'Geometry') {
+      geom[k] = item;
+    }
+  }
+  object.geometries = geom;
   if (json.skeletons) {
     var skeletons = this.parseSkeletons(json.skeletons, object);
     this.bindSkeletons(object, skeletons);
@@ -1058,7 +1066,6 @@ ObjectLoader.prototype.parseObject = function (
 
   //Attach resources to program
   if (data.type === 'Program') {
-    object.geometries = geometries;
     object.materials = materials;
     object.textures = textures;
     object.resources = resources;

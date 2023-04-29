@@ -39,7 +39,17 @@ function TextureChooser(parent) {
   this.preview.appendChild(this.video);
 
   var self = this;
-
+  this.preview.oncontextmenu = function (e) {
+    console.log(self);
+    if (self.texture) {
+      let value = self.texture.img;
+      if (value.data.indexOf('data:image') == 0) {
+        saveAs(base64toFile(value.data, value.name), value.name);
+      } else {
+        value.export(value.name + '.' + value.encoding);
+      }
+    }
+  };
   //On drop get file dropped
   this.preview.ondrop = function (event) {
     //File

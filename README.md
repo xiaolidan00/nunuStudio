@@ -99,7 +99,7 @@
 - 复制材质时，名称添加 copy 区分
 - 图片选择器右击即可下载图片
 - 修复贴图源请求失败，无法保存的问题
-- shaderMaterial 材质的 glb 模型导入，图片解析错误，模型形状丢失问题（禁用 shaderMaterial)
+- shaderMaterial 材质的 glb 模型导入保存后再打开，图片解析错误，模型形状丢失问题（禁用 shaderMaterial)
 
 ## 待解决
 
